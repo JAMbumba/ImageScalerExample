@@ -7,30 +7,30 @@ class ScaleAndCompressImage {
 
     fun scaleAndCompressImage(
         originalBitmap: Bitmap,
-        desiredWidth: Int? = null,
-        desiredHeight: Int? = null,
-        targetFileSizeMB: Int = 1  // Target file size in MB
+        getWidth: Int? = null,
+        getHeight: Int? = null,
+        targetFileSizeMB: Int = 1  //target file size in MB
     ): ByteArray {
 
-        val originalWidth = originalBitmap.width
-        val originalHeight = originalBitmap.height
-        val aspectRatio = originalWidth.toFloat() / originalHeight.toFloat()
+        val originalImageWidth = originalBitmap.width
+        val originalImageHeight = originalBitmap.height
+        val aspectRatio = originalImageWidth.toFloat() / originalImageHeight.toFloat()
 
         val (scaledWidth, scaledHeight) = when {
-            desiredWidth != null -> {
-                val height = (desiredWidth / aspectRatio).toInt()
-                desiredWidth to height
+            getWidth != null -> {
+                val height = (getWidth / aspectRatio).toInt()
+                getWidth to height
             }
 
-            desiredHeight != null -> {
-                val width = (desiredHeight * aspectRatio).toInt()
-                width to desiredHeight
+            getHeight != null -> {
+                val width = (getHeight * aspectRatio).toInt()
+                width to getHeight
             }
 
-            else -> originalWidth to originalHeight
+            else -> originalImageWidth to originalImageHeight
         }
 
-        val scaledBitmap =
+        val scaledImage =
             Bitmap.createScaledBitmap(originalBitmap, scaledWidth, scaledHeight, true)
 
         val targetFileSizeBytes = targetFileSizeMB * 1024 * 1024
@@ -39,7 +39,7 @@ class ScaleAndCompressImage {
 
         do {
             byteArrayOutputStream.reset()
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+            scaledImage.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
             quality -= 5
         } while (byteArrayOutputStream.size() > targetFileSizeBytes && quality > 0)
         return byteArrayOutputStream.toByteArray()

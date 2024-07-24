@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
         val targetFileSizeMB = 1
         val compressedImageBytes = scaleAndCompressImage.scaleAndCompressImage(
             originalImage,
-            desiredWidth = thumbnailWidth,
-            desiredHeight = thumbnailHeight,
+            getWidth = thumbnailWidth,
+            getHeight = thumbnailHeight,
             targetFileSizeMB = targetFileSizeMB
         )
 
